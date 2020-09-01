@@ -105,7 +105,16 @@ connection.connect(function(err) {
 
 
     function employeeRoster() {
-      console.log("testing code")
+      var query = "SELECT * FROM employee";
+      connection.query(query, function(err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+          console.log(res[i]);
+        }
+        console.log("it works!")
+        // runSearch();
+      });
+      
     }
 
 
