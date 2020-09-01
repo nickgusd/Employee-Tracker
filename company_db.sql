@@ -36,9 +36,11 @@ PRIMARY KEY (id)
 INSERT INTO department (name)
 VALUES ("Sales"), ("Engineering"), ("Finance"), ("Legal");
 
-INSERT INTO department (name)
-VALUES ("Sales"), ("Engineering"), ("Finance"), ("Legal");
+INSERT INTO employee_role (title, salary, department_id)
+VALUES ("Lead Engineer", 150000, 2), ("Sales Lead",	100000,	1), ("Lawyer", 190000,	4), ("Salesperson",	80000, 1), ("Account Manager",	160000,	3), ("Accountant", 125000,	3), ("Software Engineer",	120000,	2), ("Legal Team Lead",	200000,	4);
 
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES ("Rick",	"Sanchez",	3,	0), ("Peter",	"Griffin",	4,	0), ("Morty",	"Smith",	2,	3), ("Beth",	"Smith",	1,	4), ("Lois",	"Griffin",	5,	0), ("Ben",	"Miller",	7,	2), ("Patrick",	"Star",	6,	1), ("Michael",	"Jordan",	8,	0);
 
 
 
