@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+const cTable = require("console.table")
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -41,7 +42,6 @@ connection.connect(function(err) {
           "View All Departments",
           "Add Department",
           "Quit"
-
         ]
       })
 
@@ -108,13 +108,25 @@ connection.connect(function(err) {
       var query = "SELECT * FROM employee";
       connection.query(query, function(err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-          console.log(res[i]);
-        }
-        console.log("it works!")
+       
+          // console.log(console.table("Employee: " + res[i].id + res[i].first_name + res[i].last_name + res[i].role_id + res[i].manager_id));
+          console.log(console.table(res))
+          console.log("it works")
         // runSearch();
       });
       
+    }
+
+    function employeesDepartment() {
+      var query = "SELECT employee_role.id, employee_role.title, employee_role.salary, employee_role.department_id FROM employee_role INNER JOIN department ON (employee_role.department_id = department.id) WHERE (employee_role.department_id =? AND department.id =?)"
+      connection.query(query, function(err, res) {
+        if (err) throw err;
+       
+          // console.log(console.table("Employee: " + res[i].id + res[i].first_name + res[i].last_name + res[i].role_id + res[i].manager_id));
+          console.log(console.table(res))
+          console.log("employees by department")
+        // runSearch();
+      });
     }
 
 
