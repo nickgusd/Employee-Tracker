@@ -33,6 +33,17 @@ PRIMARY KEY (id)
 );
 
 
+INSERT INTO department (name)
+VALUES ("Sales"), ("Engineering"), ("Finance"), ("Legal");
+
+INSERT INTO department (name)
+VALUES ("Sales"), ("Engineering"), ("Finance"), ("Legal");
+
+
+
+
+
+
 
 -- * **department**:
 
