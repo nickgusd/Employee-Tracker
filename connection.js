@@ -109,28 +109,135 @@ connection.connect(function(err) {
       connection.query(query, function(err, res) {
         if (err) throw err;
        
-          // console.log(console.table("Employee: " + res[i].id + res[i].first_name + res[i].last_name + res[i].role_id + res[i].manager_id));
           console.log(console.table(res))
           console.log("it works")
-        // runSearch();
+       
       });
       
     }
 
     function employeesDepartment() {
-      var query = "SELECT employee_role.id, employee_role.title, employee_role.salary, employee_role.department_id FROM employee_role INNER JOIN department ON (employee_role.department_id = department.id) WHERE (employee_role.department_id =? AND department.id =?)"
+      // var query = "SELECT * FROM department"
+      // var query = "SELECT employee.id, employee.first_name, employee.last_name, employee.role_id FROM employee LEFT [OUTER] JOIN department "
+      var query = "SELECT employee_role.id, employee_role.title, employee_role.salary, employee_role.department_id, department.name FROM employee_role LEFT JOIN department ON employee_role.department_id = department.id"
       connection.query(query, function(err, res) {
         if (err) throw err;
        
-          // console.log(console.table("Employee: " + res[i].id + res[i].first_name + res[i].last_name + res[i].role_id + res[i].manager_id));
           console.log(console.table(res))
           console.log("employees by department")
-        // runSearch();
+
       });
+        
     }
 
+    function employeeManager() {
+     
+      var query = "SELECT * FROM employee";
+      connection.query(query, function(err, res) {
+        if (err) throw err;
+        
+        for (var i = 0; i < res.length; i++) {
+          if (res[i].manager_id == 1) {
+            res[6].manager_id = "rick";
+            
+          } else if (res[i].manager_id == 2) {
+            res[5].manager_id = "Lois";
+          } else if (res[i].manager_id == 3) {
+            res[2].manager_id = "Michael";
+          } else if (res[i].manager_id == 4)  {
+            res[3].manager_id = "Peter";
+          } else {
+            res[i].manager_id = "No Manager";
+          }
 
+        }
+          console.log(console.table(res))
+         
+      });
 
+    }
 
+    function addEmployee() {
+      inquirer
+      .prompt([
+        {
+          type: "input",
+          message: "What is your employee's first name?",
+          name: "firstname", 
+      },  
+      {
+          type: "input",
+          message: "What is your employee's last name?",
+          name: "lastname",
+      },
+      {
+          type: "input",
+          message: "What is your employee's role?",
+          name: "employeerole",
+      },
+      {
+          type: "input",
+          message: "Who is your employee's manager?",
+          name: "manager",
+    },
+  ])
+    .then(function(data) {
+      console.log(data)
+     
+      // VALUES ("Rick",	"Sanchez",	3,	0)
+      var query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) " + "VALUES " + "(" + `${data.firstname}` + "," + `${data.lastname}` + "," + `${data.employeerole}` + "," + `${data.manager}` + ")";
 
+      connection.query(query, function(err, res) {
+        if (err) throw err;
+       
+          console.log(console.table(res))
+          console.log("employees by department")
+
+      });
+
+  })
+    .catch(function(err) {
+      throw err;
+  }) 
+    }
+
+    function removeEmployee() {
+
+      inquirer
+      .prompt({
+        name: "action",
+        type: "list",
+        message: "Which employee do you want to remove?",
+        choices: [
+          "Rick",
+          "Peter",
+          "Morty",
+          "Beth",
+          "Lois",  
+          "Ben",
+          "Patrick",
+          "Michael",
+          
+        ]
+      })
+      .then(function(data) {
+
+          console.log(data.action)
+
+          var query = "DELETE FROM employee WHERE first_name =?" 
+          connection.query(query, [data.action], function(err, res) {
+          if (err) throw err;
+       
+          console.log(console.table(res))
+          console.log("it works")
+       
+      });
+
+      })
+
+    }
  
+
+    function updateRole() {
+      
+    }
