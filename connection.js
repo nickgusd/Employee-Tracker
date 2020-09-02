@@ -237,11 +237,10 @@ connection.connect(function(err) {
 
     }
  
-
     function updateRole() {
 
       inquirer
-      .prompt({
+      .prompt([{
         name: "role",
         type: "list",
         message: "Which employee's role do you want to update?",
@@ -257,23 +256,39 @@ connection.connect(function(err) {
           
         ]},
         {
-          name: "position",
-          type: "list",
-          message: "Which employee's role do you want to assign the selected employee?",
-          choices: [
-            "Sales Lead",
-            "Salesperson",
-            "Lead Engineer",
-            "Software Engineer",
-            "Account Manager",  
-            "Accountant",
-            "Legal Team Lead",
+        name: "position",
+        type: "list",
+        message: "Which employee's role do you want to assign the selected employee?",
+        choices: [
+          "Sales Lead",
+          "Salesperson",
+          "Lead Engineer",
+          "Software Engineer",
+          "Account Manager",  
+          "Accountant",
+          "Legal Team Lead",
           ]}
-      )
-
+        ])
       .then(function(data) {
         console.log(data)
-      })
 
+        // var query = "SELECT * FROM employee";
+        var query = "SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee_role.title FROM employee LEFT JOIN employee_role ON employee.id = employee_role.id"
+          connection.query(query, function(err, res) {
+          if (err) throw err;
+       
+            for (var i = 0; i < res.length; i++) {
+              if (data.role == res[i].first_name) {
+                res[i].title = data.position;
+              }
+            }
+          console.log(res[0].first_name)
+          console.log(console.table(res))
+      });
+
+      })
+      .catch(function(err) {
+        throw err;
+    })
     }
 
