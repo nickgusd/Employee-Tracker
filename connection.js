@@ -255,12 +255,25 @@ connection.connect(function(err) {
           "Patrick",
           "Michael",
           
-        ]
-      })
+        ]},
+        {
+          name: "position",
+          type: "list",
+          message: "Which employee's role do you want to assign the selected employee?",
+          choices: [
+            "Sales Lead",
+            "Salesperson",
+            "Lead Engineer",
+            "Software Engineer",
+            "Account Manager",  
+            "Accountant",
+            "Legal Team Lead",
+          ]}
+      )
 
       .then(function(data) {
-        console.log(data.role)
-
+        console.log(data)
       })
 
     }
+
