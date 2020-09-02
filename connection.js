@@ -239,5 +239,28 @@ connection.connect(function(err) {
  
 
     function updateRole() {
-      
+
+      inquirer
+      .prompt({
+        name: "role",
+        type: "list",
+        message: "Which employee's role do you want to update?",
+        choices: [
+          "Rick",
+          "Peter",
+          "Morty",
+          "Beth",
+          "Lois",  
+          "Ben",
+          "Patrick",
+          "Michael",
+          
+        ]
+      })
+
+      .then(function(data) {
+        console.log(data.role)
+
+      })
+
     }
