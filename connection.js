@@ -746,7 +746,7 @@ connection.connect(function(err) {
       id4: "Legal"
     }
 
-    var query = "SELECT * FROM employee";
+    // var query = "SELECT * FROM employee";
     var query = "DELETE FROM department WHERE name=?" 
     connection.query(query,[data.department], function(err, res) {
     if (err) throw err;
@@ -758,7 +758,7 @@ connection.connect(function(err) {
     connection.query(query, function(err, res) {
     if (err) throw err;
     // console.log(console.table(res))
-    console.log(res)
+    // console.log(res)
 
       for (var i = 0; i < res.length; i++) {
         if (res[i].department_id == departmentobj.id1) {
@@ -786,7 +786,7 @@ connection.connect(function(err) {
         })
         }
       }
-         console.log(console.table(res))
+         console.log("removed department" + data.department)
     })
   })
   .catch(function(err) {
