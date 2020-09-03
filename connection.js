@@ -41,6 +41,7 @@ connection.connect(function(err) {
           "Remove Role",
           "View All Departments",
           "Add Department",
+          "Remove Department",
           "Quit"
         ]
       })
@@ -95,6 +96,10 @@ connection.connect(function(err) {
           addDepartment();
           break;
 
+        case "Remove Department":
+          removeDepartment();
+          break;
+
         case "Quit":
           connection.end();
           break;
@@ -127,7 +132,7 @@ connection.connect(function(err) {
           console.log("employees by department")
 
       });
-        
+      // start()
     }
 
     function employeeManager() {
@@ -154,7 +159,7 @@ connection.connect(function(err) {
           console.log(console.table(res))
          
       });
-
+      // start()
     }
 
     function addEmployee() {
@@ -282,7 +287,7 @@ connection.connect(function(err) {
       });
 
       })
-
+      // start()
     }
  
     function updateRole() {
@@ -338,6 +343,7 @@ connection.connect(function(err) {
       .catch(function(err) {
         throw err;
     })
+    // start()
     }
 
 
@@ -391,6 +397,7 @@ connection.connect(function(err) {
       .catch(function(err) {
         throw err;
     })
+    // start()
     }
 
    function viewRoles() {
@@ -402,6 +409,7 @@ connection.connect(function(err) {
         console.log("View All Roles")
 
     });
+    // start()
    }
 
 
@@ -457,7 +465,7 @@ connection.connect(function(err) {
   .catch(function(err) {
     throw err;
   })
-
+  // start()
    }
 
   function removeRole() {
@@ -483,14 +491,13 @@ connection.connect(function(err) {
 
        console.log(data.role)
 
-    //     var query = "DELETE FROM employee_role WHERE title =?" 
-    //     connection.query(query, [data.role], function(err, res) {
-    //     if (err) throw err;
+        var query = "DELETE FROM employee_role WHERE title =?" 
+        connection.query(query, [data.role], function(err, res) {
+        if (err) throw err;
      
-    //     console.log(res)
-    //     console.log("Removed Role")
-    // });
-
+        console.log(res)
+        console.log("Removed Role")
+    });
 
       var query = "SELECT * FROM employee";
       connection.query(query, function(err, res) {
@@ -512,51 +519,51 @@ connection.connect(function(err) {
         for (var i = 0; i < res.length; i++) {
           if (data.role == roleId.role1) {
 
-            var query = "DELETE * FROM employee WHERE id = 1" 
+            var query = "DELETE FROM employee WHERE id = 1" 
             connection.query(query, function(err, res) {
             if (err) throw err;
             })
 
           } else if (data.role == roleId.role2) {
 
-            var query = "DELETE * FROM employee WHERE id = 2" 
+            var query = "DELETE FROM employee WHERE id = 2" 
             connection.query(query, function(err, res) {
             if (err) throw err;
             })
 
           } else if (data.role == roleId.role3) {
-            var query = "DELETE * FROM employee WHERE id = 3" 
+            var query = "DELETE FROM employee WHERE id = 3" 
             connection.query(query, function(err, res) {
             if (err) throw err;
             })
 
           } else if (data.role == roleId.role4) {
 
-            var query = "DELETE * FROM employee WHERE id = 4" 
+            var query = "DELETE FROM employee WHERE id = 4" 
             connection.query(query, function(err, res) {
             if (err) throw err;
             })
 
           } else if (data.role == roleId.role5) {
-            var query = "DELETE * FROM employee WHERE id = 5" 
+            var query = "DELETE FROM employee WHERE id = 5" 
             connection.query(query, function(err, res) {
             if (err) throw err;
             })
 
           } else if (data.role == roleId.role6) {
-            var query = "DELETE * FROM employee WHERE id = 6" 
+            var query = "DELETE FROM employee WHERE id = 6" 
             connection.query(query, function(err, res) {
             if (err) throw err;
             })
 
           } else if (data.role == roleId.role7) {
-            var query = "DELETE * FROM employee WHERE id = 7" 
+            var query = "DELETE FROM employee WHERE id = 7" 
             connection.query(query, function(err, res) {
             if (err) throw err;
             })
 
           } else if (data.role == roleId.role8) {
-            var query = "DELETE * FROM employee WHERE id = 8" 
+            var query = "DELETE FROM employee WHERE id = 8" 
             connection.query(query, function(err, res) {
             if (err) throw err;
             })
@@ -564,17 +571,126 @@ connection.connect(function(err) {
           } else {
             console.log("no roles to delete")
           }
-
         }
-
-
-
       console.log(res)
       //may need to add async 
-   
-});
+    });
+    })
+    // start()
+    }
 
+  function viewDepartments(){
 
+    var query = "SELECT * FROM department";
+      connection.query(query, function(err, res) {
+        if (err) throw err;
+       
+          console.log(console.table(res))
+          console.log("List of Departments")
+       
+      });
+      // start()
+  }
+
+  function addDepartment() {
+    inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What is the name of the department you would like to add?",
+        name: "department", 
+    }  
+  ])
+  .then(function(data) {
+    console.log(data)
+
+    // var query = "SELECT * FROM employee";
+    var query = "INSERT INTO department(name) " + "VALUES " + "( '"+ `${data.department}` + "')";
+    connection.query(query, function(err, res) {
+    if (err) throw err;
+
+    console.log("Added to Database")
+  })
+
+  })
+  .catch(function(err) {
+    throw err;
+})
+// start()
+  }
+
+  function removeDepartment() {
+    inquirer
+    .prompt([
+      {
+        name: "department", 
+        type: "list",
+        message: "Which department would you like to remove?",
+        choices: [
+          "Sales",
+          "Engineering",
+          "Finance",
+          "Legal",
+          "Admin",
+          "MGMT",
+          "Marketing"
+        ]}  
+  ])
+  .then(function(data) {
+    console.log(data)
+
+    const departmentobj = {
+      id1: "Sales",
+      id2: "Engineering",
+      id3: "Finance",
+      id4: "Legal"
+    }
+
+    var query = "SELECT * FROM employee";
+    var query = "DELETE FROM department WHERE name=?" 
+    connection.query(query,[data.department], function(err, res) {
+    if (err) throw err;
     })
 
+
+    var query = "SELECT employee.id, employee.first_name, employee.last_name, employee.role_id, employee_role.title, employee_role.department_id FROM employee LEFT JOIN employee_role ON employee.id = employee_role.id"
+
+    connection.query(query, function(err, res) {
+    if (err) throw err;
+    // console.log(console.table(res))
+    console.log(res)
+
+      for (var i = 0; i < res.length; i++) {
+        if (res[i].department_id == departmentobj.id1) {
+        var query = "DELETE FROM employee_role WHERE department_id = 1" 
+        connection.query(query, function(err, res) {
+        if (err) throw err;
+        })
+
+        } else if (res[i].department_id == departmentobj.id2) {
+        var query = "DELETE FROM employee_role WHERE department_id = 2"
+        connection.query(query, function(err, res) {
+        if (err) throw err;
+        })
+  
+        } else if (res[i].department_id == departmentobj.id3) {
+        var query = "DELETE FROM employee_role WHERE department_id = 3"
+        connection.query(query, function(err, res) {
+        if (err) throw err;
+        })
+        } else {
+
+        var query = "DELETE FROM employee_role WHERE department_id = 4"
+        connection.query(query, function(err, res) {
+        if (err) throw err;
+        })
+        }
+      }
+         console.log(console.table(res))
+    })
+  })
+  .catch(function(err) {
+    throw err;
+})
+// start()
   }
