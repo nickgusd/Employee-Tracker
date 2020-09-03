@@ -22,6 +22,20 @@ connection.connect(function(err) {
    start()
   });
 
+  const departmentobj = {
+    id1: "Sales",
+    id2: "Engineering",
+    id3: "Finance",
+    id4: "Legal"
+  }
+
+  const managers = {
+    id1: "Rick",
+    id2: "Lois",
+    id3: "Michael",
+    id4: "Peter"
+  }
+
   function start() {
     inquirer
       .prompt({
@@ -108,30 +122,116 @@ connection.connect(function(err) {
 
     }
 
-
     function employeeRoster() {
-      var query = "SELECT * FROM employee";
+      // var query = "SELECT * FROM employee";
+      var query = "SELECT employee_role.id, employee.first_name, employee.last_name, employee_role.title, employee_role.salary, employee_role.department_id, employee.manager_id FROM employee_role LEFT JOIN employee ON employee_role.id = employee.id"
       connection.query(query, function(err, res) {
         if (err) throw err;
-       
-          console.log(console.table(res))
-          console.log("it works")
+        // console.table(res)
+        for (var i = 0; i < res.length; i++) {
+          if (res[i].department_id == 1){
+            res[i].department_id = departmentobj.id1;
+          } else if (res[i].department_id == 2) {
+            res[i].department_id = departmentobj.id2;
+          } else if (res[i].department_id == 3) {
+            res[i].department_id = departmentobj.id3;
+          } else if (res[i].department_id == 4) {
+            res[i].department_id = departmentobj.id4;
+          } else {
+            console.log("All Employees")
+          }
+
+          if (res[i].manager_id == 1){
+            res[i].manager_id = managers.id1;
+          } else if (res[i].manager_id == 2) {
+            res[i].manager_id = managers.id2;
+          } else if (res[i].manager_id == 3) {
+            res[i].manager_id = managers.id3;
+          } else if (res[i].manager_id == 4) {
+            res[i].manager_id = managers.id4;
+          } else if (res[i].manager_id == 0) {
+            res[i].manager_id = "No Manager";
+          } else {
+            return
+          }
+          
+        }
+        console.table(res)
+   
        
       });
       
     }
+    
+    // start()
 
     function employeesDepartment() {
-      // var query = "SELECT * FROM department"
-      // var query = "SELECT employee.id, employee.first_name, employee.last_name, employee.role_id FROM employee LEFT [OUTER] JOIN department "
-      var query = "SELECT employee_role.id, employee_role.title, employee_role.salary, employee_role.department_id, department.name FROM employee_role LEFT JOIN department ON employee_role.department_id = department.id"
+
+      inquirer
+    .prompt([
+      {
+        name: "department", 
+        type: "list",
+        message: "Which department would you like to see employees for?",
+        choices: [
+          "Sales",
+          "Engineering",
+          "Finance",
+          "Legal",
+        ]}  
+  ])
+  .then(function(data) {
+
+    // console.log(data.department)
+
+    var query = "SELECT employee_role.id, employee_role.title, employee_role.salary, employee_role.department_id, department.name FROM employee_role LEFT JOIN department ON employee_role.department_id = department.id"
       connection.query(query, function(err, res) {
         if (err) throw err;
+        console.table(res)
        
-          console.log(console.table(res))
-          console.log("employees by department")
-
+      //   for (var i = 0; i < res.length; i ++) {
+      //     if(res[i].name == data.department) {
+      //       var query2 = "SELECT * FROM employee WHERE role_id = 1 or role_id = 4";
+      //       connection.query(query2, function(err, res2) {
+      //         if (err) throw err;
+      //         console.table(res2)
+      //       })
+      //     } else if (res[1].name == data.department) {
+      //       var query3 = "SELECT * FROM employee WHERE role_id = 6 or role_id = 3";
+      //       connection.query(query3, function(err, res3) {
+      //         if (err) throw err;
+      //         console.log(console.table(res3))
+      //       })
+      //     } else if (res[2].name == data.department) {
+      //       var query4 = "SELECT * FROM employee WHERE role_id = 5 or role_id = 7";
+      //       connection.query(query4, function(err, res4) {
+      //         if (err) throw err;
+      //         console.log(console.table(res4))
+      //       })
+      //     } else if (res[3].name == data.department){
+      //       var query5 = "SELECT * FROM employee WHERE role_id = 2 or role_id = 8";
+      //       connection.query(query5, function(err, res5) {
+      //         if (err) throw err;
+      //         console.log(console.table(res5))
+      //       })
+      //     } else {
+      //       console.log("No other departments")
+      //     }
+      // }
       });
+
+})
+
+      // var query = "SELECT * FROM department"
+      // var query = "SELECT employee.id, employee.first_name, employee.last_name, employee.role_id FROM employee LEFT [OUTER] JOIN department "
+      // var query = "SELECT employee_role.id, employee_role.title, employee_role.salary, employee_role.department_id, department.name FROM employee_role LEFT JOIN department ON employee_role.department_id = department.id"
+      // connection.query(query, function(err, res) {
+      //   if (err) throw err;
+       
+      //     // console.log(console.table(res))
+      //     console.log("employees by department")
+
+      // });
       // start()
     }
 
@@ -389,7 +489,7 @@ connection.connect(function(err) {
                 
               }
             }
-            
+            console.table(res)
           console.log("updated employee manager")
       });
 
@@ -456,8 +556,8 @@ connection.connect(function(err) {
     if (err) throw err;
 
     //might need to add Async function so the data is added to the table before the tables are joined, right now showing null
-
-    console.log("Added to database")
+      console.table(res);
+    // console.log("Added to database")
   });
 
 
@@ -495,8 +595,8 @@ connection.connect(function(err) {
         connection.query(query, [data.role], function(err, res) {
         if (err) throw err;
      
-        console.log(res)
-        console.log("Removed Role")
+        console.table(res)
+        // console.log("Removed Role")
     });
 
       var query = "SELECT * FROM employee";
@@ -572,7 +672,7 @@ connection.connect(function(err) {
             console.log("no roles to delete")
           }
         }
-      console.log(res)
+      console.table(res)
       //may need to add async 
     });
     })
