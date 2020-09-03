@@ -182,17 +182,65 @@ connection.connect(function(err) {
     },
   ])
     .then(function(data) {
-      console.log(data)
+      // console.log(data)
      
-      // VALUES ("Rick",	"Sanchez",	3,	0)
-      var query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) " + "VALUES " + "(" + `${data.firstname}` + "," + `${data.lastname}` + "," + `${data.employeerole}` + "," + `${data.manager}` + ")";
+      
+      var query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) " + "VALUES " + "( '"+ `${data.firstname}` + "','" + `${data.lastname}` + "'," + `${data.employeerole}` + "," + `${data.manager}` + ")";
 
       connection.query(query, function(err, res) {
         if (err) throw err;
-       
-          console.log(console.table(res))
-          console.log("employees by department")
+          console.log(res)
 
+      
+      });
+
+      
+      var query = "SELECT * FROM employee";
+      connection.query(query, function(err, res) {
+        if (err) throw err;
+       
+
+        var newEmployee = res[res.length -1]
+
+
+        for (var i = 0; i < res.length; i++) {
+          if (res[i].role_id == 1) {
+            newEmployee.role_id = "Lead Engineer"
+          } else if (res[i].role_id == 2) {
+            newEmployee.role_id = "Sales Lead"
+          } else if (res[i].role_id == 3) {
+            newEmployee.role_id = "Lawyer"
+          } else if (res[i].role_id == 4) {
+          newEmployee.role_id = "Salesperson"
+          } else if (res[i].role_id == 5) {
+          newEmployee.role_id = "Account Manager"
+          } else if (res[i].role_id == 6) {
+            newEmployee.role_id = "Accountant"
+          } else if (res[i].role_id == 7) {
+            newEmployee.role_id = "Software Engineer"
+          } else if (res[i].role_id == 8) {
+            newEmployee.role_id = "Legal Team Lead"
+          } else {
+            console.log("Added to the database")
+          }
+      }
+
+      
+          if (newEmployee.manager_id  == 1) {
+          newEmployee.manager_id = "Rick";
+        } else if (newEmployee.manager_id  == 2) {
+          newEmployee.manager_id = "Lois";
+        } else if (newEmployee.manager_id  == 3) {
+          newEmployee.manager_id = "Michael";
+        } else if (newEmployee.manager_id  == 4) {
+          newEmployee.manager_id = "Peter";
+        } else {
+          newEmployee.manager_id = "No Manager"
+        }
+    
+
+        console.table(newEmployee)
+          
       });
 
   })
